@@ -3,38 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedido de Reposição</title>
+    <title>PRODUTOS CASTELBEL REPOSIÇÃO</title>
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
-            background-color: #f5f5f5;
+            /* NOVA COR DE FUNDO ELEGANTE */
+            background-color: #1e293b;
             margin: 0;
             padding: 15px;
             color: #333;
         }
         .container {
             max-width: 500px;
-            margin: 0 auto;
+            margin: 20px auto;
             background: white;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        h1 {
+            font-size: 18px;
+            text-align: center;
+            color: #222;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
         }
         h2 {
-            font-size: 16px;
+            font-size: 15px;
             margin-top: 20px;
             margin-bottom: 8px;
             color: #444;
-            border-bottom: 2px solid #eee;
+            border-bottom: 1px solid #eee;
             padding-bottom: 5px;
-        }
-        .info-fornecedor {
-            background-color: #e9ecef;
-            padding: 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 14px;
-            margin-bottom: 15px;
         }
         label {
             display: block;
@@ -50,6 +51,13 @@
             border-radius: 6px;
             font-size: 16px;
             box-sizing: border-box;
+        }
+        .row-nome {
+            display: flex;
+            gap: 10px;
+        }
+        .row-nome div {
+            flex: 1;
         }
         .btn-add {
             background-color: #007bff;
@@ -120,11 +128,20 @@
 <body>
 
 <div class="container">
-    <!-- Botão com comando direto simplificado que o telemóvel não consegue bloquear -->
     <button class="btn-instalar-manual" onclick="alert('PARA INSTALAR NO SEU ECRÃ:\n\n• Se usa ANDROID (Chrome):\n1. Clique nos 3 pontinhos (:) no canto superior direito.\n2. Escolha \'Adicionar ao ecrã principal\' ou \'Instalar\'.\n\n• Se usa IPHONE (Safari):\n1. Clique no botão Partilhar (quadrado com seta para cima na barra inferior).\n2. Selecione \'Adicionar ao Ecrã Principal\'.');">📲 INSTALAR APLICAÇÃO NO TELEMÓVEL</button>
 
-    <h2>Dados do Fornecedor</h2>
-    <div class="info-fornecedor">Contacto: +351 919 658 512</div>
+    <h1>PRODUTOS CASTELBEL REPOSIÇÃO</h1>
+
+    <div class="row-nome">
+        <div>
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" placeholder="O seu nome">
+        </div>
+        <div>
+            <label for="apelido">Apelido:</label>
+            <input type="text" id="apelido" placeholder="O seu apelido">
+        </div>
+    </div>
 
     <h2>Selecionar Mercadoria</h2>
     <label for="produto">Escolha o Produto:</label>
@@ -211,26 +228,21 @@
     }
 
     function executarEnvio(event) {
+        const nome = document.getElementById('nome').value.trim();
+        const apelido = document.getElementById('apelido').value.trim();
+
+        if (!nome || !apelido) {
+            alert('Por favor, introduza o seu Nome e Apelido antes de enviar.');
+            event.preventDefault();
+            return false;
+        }
+
         if (itensPedido.length === 0) {
             alert('A sua lista está vazia! Adicione produtos primeiro.');
             event.preventDefault();
             return false;
         }
 
-        let mensagem = "*Novo Pedido de Reposição*\n\nOlá, gostaria de solicitar a reposição dos seguintes produtos:\n\n";
-        itensPedido.forEach(function(item) {
-            mensagem += "• *" + item.produto + "* (" + item.qtd + ")\n";
-        });
-        mensagem += "\nFico a aguardar a confirmação do pedido. Obrigado!";
-        
-        const url = "whatsapp://send?phone=" + numeroFornecedor + "&text=" + encodeURIComponent(mensagem);
-        document.getElementById('linkEnviar').href = url;
-        return true;
-    }
-    
-    atualizarLista();
-</script>
-
-</body>
-</html>
+        let mensagem = "*Novo Pedido de Reposição*\n";
+        mensagem += "Cliente: " + nome + " " + apelido + "\n\n";
 
