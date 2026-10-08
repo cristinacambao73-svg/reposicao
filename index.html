@@ -119,7 +119,7 @@
             border-radius: 6px;
             font-weight: bold;
             margin-bottom: 15px;
-            display: none; /* Só aparece se o tlm suportar */
+            display: none;
         }
     </style>
 </head>
@@ -130,7 +130,7 @@
 
     <h2>Dados do Fornecedor</h2>
     <div class="info-fornecedor">
-        Contacto: +351919658512
+        Contacto: +351 919 658 512
     </div>
 
     <h2>Selecionar Mercadoria</h2>
@@ -148,14 +148,14 @@
 
     <h2>Lista de Reposição Atual</h2>
     <div id="listaProdutos" class="lista-box">
-        <!-- Itens entram aqui dinamicamente -->
+        <!-- Itens dinâmicos -->
     </div>
 
     <button class="btn-whatsapp" onclick="enviarWhatsApp()">✉ ENVIAR PEDIDO VIA WHATSAPP</button>
 </div>
 
 <script>
-    const numeroFornecedor = "+351919658512";
+    const numeroFornecedor = "351919658512";
     let itensPedido = [];
 
     function adicionarProduto() {
@@ -169,7 +169,7 @@
 
         itensPedido.push({ produto, qtd });
         atualizarInterfaceLista();
-        document.getElementById('quantidade').value = "1 un"; // Reseta campo
+        document.getElementById('quantidade').value = "1 un";
     }
 
     function removerProduto(index) {
@@ -213,12 +213,14 @@
         mensagem += "\nFico a aguardar a confirmação do pedido. Obrigado!";
         
         const textoCodificado = encodeURIComponent(mensagem);
-        const urlWhatsApp = `https://wa.me{numeroFornecedor}?text=${textoCodificado}`;
+        
+        // CORREÇÃO: Nova API universal que funciona em qualquer navegador de telemóvel e computador
+        const urlWhatsApp = `https://whatsapp.com{numeroFornecedor}&text=${textoCodificado}`;
         
         window.open(urlWhatsApp, '_blank');
     }
 
-    // Código para gerir o botão de instalação automática no Android
+    // Instalação PWA
     let deparaInstalacao;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
@@ -236,7 +238,6 @@
         }
     });
     
-    // Inicializa texto de lista vazia
     atualizarInterfaceLista();
 </script>
 
