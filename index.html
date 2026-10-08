@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pedido de Reposição</title>
     
-    <!-- Configurações PWA obrigatórias para instalação automática -->
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -109,25 +108,28 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             box-sizing: border-box;
         }
-        /* Botão extra no topo por segurança */
+        /* Botão de instalação visível e destacado no topo */
         .btn-instalar-topo {
-            display: none;
+            display: block; /* Forçado visível por padrão */
             background-color: #343a40;
             color: white;
             border: none;
             width: 100%;
-            padding: 10px;
-            border-radius: 6px;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 15px;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <button id="btnInstalarJanela" class="btn-instalar-topo">📲 INSTALAR APLICAÇÃO NO ECRÃ</button>
+    <!-- Botão visível para o utilizador clicar e instalar quando quiser -->
+    <button id="btnInstalarJanela" class="btn-instalar-topo" onclick="dispararInstalacao()">📲 CLIQUE AQUI PARA INSTALAR APP NO ECRÃ</button>
 
     <h2>Dados do Fornecedor</h2>
     <div class="info-fornecedor">Contacto: +351 919 658 512</div>
@@ -227,21 +229,14 @@
         itensPedido.forEach(function(item) {
             mensagem += "• *" + item.produto + "* (" + item.qtd + ")\n";
         });
-        mensagem += "\nFico a aguardar a confirmation do pedido. Obrigado!";
+        mensagem += "\nFico a aguardar a confirmação do pedido. Obrigado!";
         
         const url = "whatsapp://send?phone=" + numeroFornecedor + "&text=" + encodeURIComponent(mensagem);
         document.getElementById('linkEnviar').href = url;
         return true;
     }
 
-    // DISPARAR CAIXA DE INSTALAÇÃO AUTOMÁTICA
+    // GESTÃO DA INSTALAÇÃO MANUAL E AUTOMÁTICA
     let eventoInstalacao;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
-        eventoInstalacao = e;
-        
-        // Faz a caixa nativa saltar automaticamente após 1 segundo
-        setTimeout(() => {
-            dispararInstalacao();
-        }, 1000);
-        
