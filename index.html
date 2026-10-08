@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedido de Reposição WhatsApp</title>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Reposição">
+    <title>Pedido de Reposição</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             background-color: #f5f5f5;
             margin: 0;
             padding: 15px;
@@ -24,20 +21,20 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
         h2 {
-            font-size: 18px;
-            margin-top: 0;
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 8px;
             color: #444;
-            border-bottom: 2px solid #eeeeee;
-            padding-bottom: 8px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
         }
         .info-fornecedor {
             background-color: #e9ecef;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 6px;
             font-weight: bold;
             font-size: 14px;
-            margin-bottom: 20px;
-            color: #495057;
+            margin-bottom: 15px;
         }
         label {
             display: block;
@@ -47,7 +44,7 @@
         }
         select, input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 6px;
@@ -61,36 +58,32 @@
             width: 100%;
             padding: 12px;
             border-radius: 6px;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            margin-bottom: 20px;
         }
-        .btn-add:active { background-color: #0056b3; }
         .lista-box {
             border: 1px solid #ddd;
             border-radius: 6px;
-            min-height: 120px;
-            max-height: 200px;
-            overflow-y: auto;
+            min-height: 100px;
             padding: 10px;
             background: #fafafa;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
         }
         .item-lista {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 5px;
+            padding: 6px 0;
             border-bottom: 1px solid #eee;
-            font-size: 14px;
         }
         .item-lista:last-child { border-bottom: none; }
         .btn-remove {
             background-color: #dc3545;
             color: white;
             border: none;
-            padding: 4px 8px;
+            padding: 5px 10px;
             border-radius: 4px;
             font-size: 12px;
             cursor: pointer;
@@ -106,38 +99,19 @@
             font-size: 16px;
             font-weight: bold;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-top: 10px;
             box-sizing: border-box;
-            cursor: pointer;
-        }
-        .btn-whatsapp:active { background-color: #1ebd59; }
-        .btn-instalar {
-            background-color: #343a40;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            display: none;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <button id="btnInstalar" class="btn-instalar">📲 INSTALAR APP NO TELEMÓVEL</button>
-
     <h2>Dados do Fornecedor</h2>
-    <div class="info-fornecedor">
-        Contacto: +351 919 658 512
-    </div>
+    <div class="info-fornecedor">Contacto: +351 919 658 512</div>
 
     <h2>Selecionar Mercadoria</h2>
     <label for="produto">Escolha o Produto:</label>
     <select id="produto">
-        <!-- LISTA SIMPLIFICADA SEM SUBGRUPOS PARA NÃO TRAVAR EM NENHUM DISPOSITIVO -->
         <option value="C1-0732 | Castelbel Lavender 250mL">C1-0732 | Castelbel Lavender 250mL</option>
         <option value="C1-0733 | Castelbel Lavender 900mL">C1-0733 | Castelbel Lavender 900mL</option>
         <option value="C1-1532 | Castelbel White Jasmine 250mL">C1-1532 | Castelbel White Jasmine 250mL</option>
@@ -173,18 +147,15 @@
     <button class="btn-add" onclick="adicionarProduto()">Adicionar à Lista</button>
 
     <h2>Lista de Reposição Atual</h2>
-    <div id="listaProdutos" class="lista-box">
-        <!-- Itens dinâmicos -->
-    </div>
+    <div id="listaProdutos" class="lista-box">Nenhum produto adicionado.</div>
 
-    <a id="linkEnviar" class="btn-whatsapp" href="#" onclick="return executarEnvioNativo(event);">✉ ENVIAR PEDIDO VIA WHATSAPP</a>
+    <a id="linkEnviar" class="btn-whatsapp" href="#" onclick="return executarEnvio(event);">✉ ENVIAR PEDIDO VIA WHATSAPP</a>
 </div>
 
 <script>
     const numeroFornecedor = "351919658512";
     let itensPedido = [];
 
-    // MODO ULTRA COMPATÍVEL: Lê o valor bruto diretamente do elemento select
     function adicionarProduto() {
         const produto = document.getElementById('produto').value;
         const qtd = document.getElementById('quantidade').value.trim();
@@ -195,52 +166,53 @@
         }
 
         itensPedido.push({ produto, qtd });
-        atualizarInterfaceLista();
+        atualizarLista();
         document.getElementById('quantidade').value = "1 un";
     }
 
     function removerProduto(index) {
         itensPedido.splice(index, 1);
-        atualizarInterfaceLista();
+        atualizarLista();
     }
 
-    function atualizarInterfaceLista() {
+    function atualizarLista() {
         const listaDiv = document.getElementById('listaProdutos');
         listaDiv.innerHTML = '';
 
         if (itensPedido.length === 0) {
-            listaDiv.innerHTML = '<span style="color:#888; font-size:14px;">Nenhum produto adicionado.</span>';
+            listaDiv.innerHTML = 'Nenhum produto adicionado.';
             return;
         }
 
         itensPedido.forEach((item, index) => {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'item-lista';
-            itemDiv.innerHTML = `
-                <span><strong>${item.produto}</strong> (${item.qtd})</span>
-                <button class="btn-remove" onclick="removerProduto(${index})">Remover</button>
-            `;
+            itemDiv.innerHTML = '<span><strong>' + item.produto + '</strong> (' + item.qtd + ')</span>' +
+                                '<button class="btn-remove" onclick="removerProduto(' + index + ')">Remover</button>';
             listaDiv.appendChild(itemDiv);
         });
     }
 
-    function executarEnvioNativo(event) {
+    function executarEnvio(event) {
         if (itensPedido.length === 0) {
             alert('A sua lista está vazia! Adicione produtos primeiro.');
             event.preventDefault();
             return false;
         }
 
-        let mensagem = "*Novo Pedido de Reposição*\n\n";
-        mensagem += "Olá, gostaria de solicitar a reposição dos seguintes produtos:\n\n";
-
-        itensPedido.forEach(item => {
-            mensagem += `• *${item.produto}* (${item.qtd})\n`;
+        let mensagem = "*Novo Pedido de Reposição*\n\nOlá, gostaria de solicitar a reposição dos seguintes produtos:\n\n";
+        itensPedido.forEach(function(item) {
+            mensagem += "• *" + item.produto + "* (" + item.qtd + ")\n";
         });
-
         mensagem += "\nFico a aguardar a confirmação do pedido. Obrigado!";
         
-        const textoCodificado = encodeURIComponent(mensagem);
-        const urlNativaWhatsApp = `whatsapp://send?phone=${numeroFornecedor}&text=${textoCodificado}`;
-        
-        document.getElementById('linkEnviar').href = urlNativaWhatsApp;
+        const url = "whatsapp://send?phone=" + numeroFornecedor + "&text=" + encodeURIComponent(mensagem);
+        document.getElementById('linkEnviar').href = url;
+        return true;
+    }
+    
+    atualizarLista();
+</script>
+
+</body>
+</html>
