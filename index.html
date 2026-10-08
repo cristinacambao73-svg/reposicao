@@ -108,6 +108,7 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             margin-top: 10px;
             box-sizing: border-box;
+            cursor: pointer;
         }
         .btn-whatsapp:active { background-color: #1ebd59; }
         .btn-instalar {
@@ -148,11 +149,11 @@
 
     <h2>Lista de Reposição Atual</h2>
     <div id="listaProdutos" class="lista-box">
-        <!-- Itens dinâmicos -->
+        <!-- Elementos inseridos dinamicamente -->
     </div>
 
-    <!-- O link agora é validado antes pelo JavaScript nativo no clique -->
-    <a id="linkEnviar" class="btn-whatsapp" href="#" onclick="return validarClique(event);">✉ ENVIAR PEDIDO VIA WHATSAPP</a>
+    <!-- CORREÇÃO: Botão reconfigurado para acionar o protocolo nativo seguro no clique direto -->
+    <a id="linkEnviar" class="btn-whatsapp" href="#" onclick="return executarEnvioNativo(event);">✉ ENVIAR PEDIDO VIA WHATSAPP</a>
 </div>
 
 <script>
@@ -184,7 +185,6 @@
 
         if (itensPedido.length === 0) {
             listaDiv.innerHTML = '<span style="color:#888; font-size:14px;">Nenhum produto adicionado.</span>';
-            document.getElementById('linkEnviar').href = "#";
             return;
         }
 
@@ -197,12 +197,16 @@
             `;
             listaDiv.appendChild(itemDiv);
         });
-
-        // CORREÇÃO: Atualiza o link em segundo plano imediatamente após mexer na lista
-        atualizarLinkWhatsapp();
     }
 
-    function atualizarLinkWhatsapp() {
+    // CORREÇÃO DEFINITIVA: Constrói e executa a ligação diretamente usando o sistema do telemóvel no clique
+    function executarEnvioNativo(event) {
+        if (itensPedido.length === 0) {
+            alert('A sua lista está vazia! Adicione produtos primeiro.');
+            event.preventDefault();
+            return false;
+        }
+
         let mensagem = "*Novo Pedido de Reposição*\n\n";
         mensagem += "Olá, gostaria de solicitar a reposição dos seguintes produtos:\n\n";
 
@@ -213,22 +217,15 @@
         mensagem += "\nFico a aguardar a confirmação do pedido. Obrigado!";
         
         const textoCodificado = encodeURIComponent(mensagem);
-        // Usando o formato direto universal estável
-        const urlWhatsApp = `https://wa.me{numeroFornecedor}?text=${textoCodificado}`;
         
-        document.getElementById('linkEnviar').href = urlWhatsApp;
-    }
-
-    function validarClique(event) {
-        if (itensPedido.length === 0) {
-            alert('A sua lista está vazia! Adicione produtos primeiro.');
-            event.preventDefault();
-            return false;
-        }
+        // Protocolo nativo móvel direto: não abre páginas web intermédias nem gera bloqueios about:blank
+        const urlNativaWhatsApp = `whatsapp://send?phone=${numeroFornecedor}&text=${textoCodificado}`;
+        
+        document.getElementById('linkEnviar').href = urlNativaWhatsApp;
         return true;
     }
 
-    // Instalação PWA automática
+    // Código PWA para suporte a instalação
     let deparaInstalacao;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
