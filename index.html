@@ -4,13 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pedido de Reposição</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Reposição">
-    <link rel="apple-touch-icon" href="https://flaticon.com">
-
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -108,9 +101,9 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             box-sizing: border-box;
         }
-        /* BOTÃO EXTRA DE INSTALAÇÃO EXCLUSIVO */
-        .btn-instalar-extra {
-            display: none; /* Só aparece quando o telemóvel estiver pronto */
+        /* Botão de instalação manual blindado */
+        .btn-instalar-manual {
+            display: block;
             background-color: #343a40;
             color: white;
             border: none;
@@ -128,8 +121,8 @@
 <body>
 
 <div class="container">
-    <!-- BOTÃO EXTRA DEDICADO À INSTALAÇÃO -->
-    <button id="btnInstalarExclusivo" class="btn-instalar-extra" onclick="forcarInstalacao()">📲 INSTALAR APLICAÇÃO NO TELEMÓVEL</button>
+    <!-- Botão de Instalação que funciona sempre por aviso direto -->
+    <button class="btn-instalar-manual" onclick="mostrarInstrucoesInstalacao()">📲 INSTALAR APLICAÇÃO NO TELEMÓVEL</button>
 
     <h2>Dados do Fornecedor</h2>
     <div class="info-fornecedor">Contacto: +351 919 658 512</div>
@@ -180,27 +173,6 @@
 <script>
     const numeroFornecedor = "351919658512";
     let itensPedido = [];
-    let pronoInstalar = null;
-
-    // CAPTURA DO SISTEMA DE INSTALAÇÃO
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        pronoInstalar = e;
-        // Mostra o botão preto no ecrã imediatamente
-        document.getElementById('btnInstalarExclusivo').style.display = 'block';
-    });
-
-    function forcarInstalacao() {
-        if (pronoInstalar) {
-            pronoInstalar.prompt();
-            pronoInstalar.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    document.getElementById('btnInstalarExclusivo').style.display = 'none';
-                }
-                pronoInstalar = null;
-            });
-        }
-    }
 
     function adicionarProduto() {
         const produto = document.getElementById('produto').value;
@@ -211,7 +183,7 @@
             return;
         }
 
-        itensPedido.push({ produto, qtd });
+        itensPedido.push({ produto: produto, qtd: qtd });
         atualizarLista();
         document.getElementById('quantidade').value = "1 un";
     }
@@ -246,4 +218,22 @@
             return false;
         }
 
+        let mensagem = "*Novo Pedido de Reposição*\n\nOlá, gostaria de solicitar a reposição dos seguintes produtos:\n\n";
+        itensPedido.forEach(function(item) {
+            mensagem += "• *" + item.produto + "* (" + item.qtd + ")\n";
+        });
+        mensagem += "\nFico a aguardar a confirmação do pedido. Obrigado!";
+        
+        const url = "whatsapp://send?phone=" + numeroFornecedor + "&text=" + encodeURIComponent(mensagem);
+        document.getElementById('linkEnviar').href = url;
+        return true;
+    }
 
+    // INTERFACE DE AVISO DIRECTO DE INSTALAÇÃO (À prova de bloqueios de segurança)
+    function mostrarInstrucoesInstalacao() {
+        // Deteta se o utilizador está em iPhone ou Android de forma simples
+        const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        
+        if (isiOS) {
+            alert("Para salvar no seu iPhone:\n\n1. Clique no botão de 'Partilhar' (o ícone quadrado com uma seta para cima na barra de baixo).\n2. Suba o menu e escolha a opção 'Adicionar ao Ecrã Principal'.");
+        } else {
