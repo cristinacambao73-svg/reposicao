@@ -4,13 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pedido de Reposição</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Reposição">
-    <link rel="apple-touch-icon" href="https://flaticon.com">
-
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -108,29 +101,11 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             box-sizing: border-box;
         }
-        /* Botão de instalação visível e destacado no topo */
-        .btn-instalar-topo {
-            display: block; /* Forçado visível por padrão */
-            background-color: #343a40;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 14px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Botão visível para o utilizador clicar e instalar quando quiser -->
-    <button id="btnInstalarJanela" class="btn-instalar-topo" onclick="dispararInstalacao()">📲 CLIQUE AQUI PARA INSTALAR APP NO ECRÃ</button>
-
     <h2>Dados do Fornecedor</h2>
     <div class="info-fornecedor">Contacto: +351 919 658 512</div>
 
@@ -235,8 +210,9 @@
         document.getElementById('linkEnviar').href = url;
         return true;
     }
+    
+    atualizarLista();
+</script>
 
-    // GESTÃO DA INSTALAÇÃO MANUAL E AUTOMÁTICA
-    let eventoInstalacao;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
+</body>
+</html>
