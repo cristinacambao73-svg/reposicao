@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido de Reposição WhatsApp</title>
+    <!-- Configurações para o telemóvel reconhecer como uma App Instalável -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Reposição">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 15px;
+            color: #333;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        h2 {
+            font-size: 18px;
+            margin-top: 0;
+            color: #444;
+            border-bottom: 2px solid #eeeeee;
+            padding-bottom: 8px;
+        }
+        .info-fornecedor {
+            background-color: #e9ecef;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: #495057;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .btn-add {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .btn-add:active { background-color: #0056b3; }
+        .lista-box {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            min-height: 120px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background: #fafafa;
+            margin-bottom: 10px;
+        }
+        .item-lista {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 5px;
+            border-bottom: 1px solid #eee;
+            font-size: 15px;
+        }
+        .item-lista:last-child { border-bottom: none; }
+        .btn-remove {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 10px;
+        }
+        .btn-whatsapp:active { background-color: #1ebd59; }
+        .btn-instalar {
+            background-color: #343a40;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: none; /* Só aparece se o tlm suportar */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <button id="btnInstalar" class="btn-instalar">📲 INSTALAR APP NO TELEMÓVEL</button>
+
+    <h2>Dados do Fornecedor</h2>
+    <div class="info-fornecedor">
+        Contacto: 351919658512
+    </div>
+
+    <h2>Selecionar Mercadoria</h2>
+    <label for="produto">Escolha o Produto:</label>
+    <select id="produto">
+        <option value="Repositor lavanda">Repositor lavanda</option>
+        <option value="Repositor camomila">Repositor camomila</option>
+        <option value="Repositor rosa">Repositor rosa</option>
+    </select>
+
+    <label for="quantidade">Qtd. / Unidade:</label>
+    <input type="text" id="quantidade" value="1 un">
+
+    <button class="btn-add" onclick="adicionarProduto()">Adicionar à Lista</button>
+
+    <h2>Lista de Reposição Atual</h2>
+    <div id="listaProdutos" class="lista-box">
+        <!-- Itens entram aqui dinamicamente -->
+    </div>
+
+    <button class="btn-whatsapp" onclick="enviarWhatsApp()">✉ ENVIAR PEDIDO VIA WHATSAPP</button>
+</div>
+
+<script>
+    const numeroFornecedor = "351919658512";
+    let itensPedido = [];
+
+    function adicionarProduto() {
+        const produto = document.getElementById('produto').value;
+        const qtd = document.getElementById('quantidade').value.trim();
+
+        if (!qtd) {
+            alert('Por favor, defina uma quantidade.');
+            return;
+        }
+
+        itensPedido.push({ produto, qtd });
+        atualizarInterfaceLista();
+        document.getElementById('quantidade').value = "1 un"; // Reseta campo
+    }
+
+    function removerProduto(index) {
+        itensPedido.splice(index, 1);
+        atualizarInterfaceLista();
+    }
+
+    function atualizarInterfaceLista() {
+        const listaDiv = document.getElementById('listaProdutos');
+        listaDiv.innerHTML = '';
+
+        if (itensPedido.length === 0) {
+            listaDiv.innerHTML = '<span style="color:#888; font-size:14px;">Nenhum produto adicionado.</span>';
+            return;
+        }
+
+        itensPedido.forEach((item, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'item-lista';
+            itemDiv.innerHTML = `
+                <span><strong>${item.produto}</strong> (${item.qtd})</span>
+                <button class="btn-remove" onclick="removerProduto(${index})">Remover</button>
+            `;
+            listaDiv.appendChild(itemDiv);
+        });
+    }
+
+    function enviarWhatsApp() {
+        if (itensPedido.length === 0) {
+            alert('A sua lista está vazia! Adicione produtos primeiro.');
+            return;
+        }
+
+        let mensagem = "*Novo Pedido de Reposição*\n\n";
+        mensagem += "Olá, gostaria de solicitar a reposição dos seguintes produtos:\n\n";
+
+        itensPedido.forEach(item => {
+            mensagem += `• *${item.produto}* (${item.qtd})\n`;
+        });
+
+        mensagem += "\nFico a aguardar a confirmação do pedido. Obrigado!";
+        
+        const textoCodificado = encodeURIComponent(mensagem);
+        const urlWhatsApp = `https://wa.me{numeroFornecedor}?text=${textoCodificado}`;
+        
+        window.open(urlWhatsApp, '_blank');
+    }
+
+    // Código para gerir o botão de instalação automática no Android
+    let deparaInstalacao;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deparaInstalacao = e;
+        document.getElementById('btnInstalar').style.display = 'block';
+    });
+
+    document.getElementById('btnInstalar').addEventListener('click', async () => {
+        if (deparaInstalacao) {
+            deparaInstalacao.prompt();
+            const { outcome } = await deparaInstalacao.userChoice;
+            if (outcome === 'accepted') {
+                document.getElementById('btnInstalar').style.display = 'none';
+            }
+        }
+    });
+    
+    // Inicializa texto de lista vazia
+    atualizarInterfaceLista();
+</script>
+
+</body>
+</html>
