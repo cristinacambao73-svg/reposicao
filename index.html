@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pedido de Reposição</title>
+    
+    <!-- Configurações PWA obrigatórias para instalação automática -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Reposição">
+    <link rel="apple-touch-icon" href="https://flaticon.com">
+
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -101,11 +109,26 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             box-sizing: border-box;
         }
+        /* Botão extra no topo por segurança */
+        .btn-instalar-topo {
+            display: none;
+            background-color: #343a40;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <button id="btnInstalarJanela" class="btn-instalar-topo">📲 INSTALAR APLICAÇÃO NO ECRÃ</button>
+
     <h2>Dados do Fornecedor</h2>
     <div class="info-fornecedor">Contacto: +351 919 658 512</div>
 
@@ -204,15 +227,21 @@
         itensPedido.forEach(function(item) {
             mensagem += "• *" + item.produto + "* (" + item.qtd + ")\n";
         });
-        mensagem += "\nFico a aguardar a confirmação do pedido. Obrigado!";
+        mensagem += "\nFico a aguardar a confirmation do pedido. Obrigado!";
         
         const url = "whatsapp://send?phone=" + numeroFornecedor + "&text=" + encodeURIComponent(mensagem);
         document.getElementById('linkEnviar').href = url;
         return true;
     }
-    
-    atualizarLista();
-</script>
 
-</body>
-</html>
+    // DISPARAR CAIXA DE INSTALAÇÃO AUTOMÁTICA
+    let eventoInstalacao;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        eventoInstalacao = e;
+        
+        // Faz a caixa nativa saltar automaticamente após 1 segundo
+        setTimeout(() => {
+            dispararInstalacao();
+        }, 1000);
+        
