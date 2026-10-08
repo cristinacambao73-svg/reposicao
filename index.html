@@ -19,7 +19,6 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            position: relative;
         }
         h1 {
             font-size: 18px;
@@ -109,7 +108,6 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             box-sizing: border-box;
         }
-        /* ESTILO DO BOTÃO PRETO */
         .btn-instalar-manual {
             display: block;
             background-color: #343a40;
@@ -124,66 +122,30 @@
             cursor: pointer;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        /* JANELA FLUTUANTE DE AVISO (NÃO MOSTRA SITES) */
-        .caixa-alerta {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.6);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .caixa-conteudo {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            max-width: 420px;
-            width: 100%;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-        .caixa-conteudo h3 { margin-top: 0; font-size: 16px; color: #222; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-        .caixa-conteudo p { font-size: 14px; line-height: 1.6; color: #444; margin-bottom: 15px; text-align: left; }
-        .btn-fechar {
-            background-color: #343a40; color: white; border: none; width: 100%; padding: 12px;
-            border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px;
-        }
     </style>
 </head>
 <body>
 
-<!-- Janela Flutuante das Instruções -->
-<div id="janelaInstrucoes" class="caixa-alerta">
-    <div class="caixa-conteudo">
-        <h3>COMO INSTALAR NO SEU ECRÃ:</h3>
-        <p><strong>• Se usa ANDROID (Chrome):</strong><br>1. Clique nos 3 pontinhos (:) no canto superior direito.<br>2. Escolha 'Adicionar ao ecrã principal' ou 'Instalar'.</p>
-        <p><strong>• Se usa IPHONE (Safari):</strong><br>1. Clique no botão Partilhar (quadrado com seta para cima na barra inferior).<br>2. Selecione 'Adicionar ao Ecrã Principal'.</p>
-        <button class="btn-fechar" onclick="fecharJanela()">Entendido</button>
-    </div>
-</div>
-
 <div class="container">
-    <!-- Botão Preto de Volta -->
-    <button class="btn-instalar-manual" onclick="abrirJanela()">📲 INSTALAR APLICAÇÃO NO TELEMÓVEL</button>
+    <!-- Botão Preto Otimizado (Chama a função limpa sem dar erro) -->
+    <button class="btn-instalar-manual" onclick="mostrarInstrucoesLimpas()">📲 INSTALAR NO SEU ECRÃ</button>
 
     <h1>PRODUTOS CASTELBEL REPOSIÇÃO</h1>
 
     <div class="row-nome">
         <div>
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" placeholder="O seu nome">
+            <label for="campoNome">Nome:</label>
+            <input type="text" id="campoNome" placeholder="O seu nome">
         </div>
         <div>
-            <label for="apelido">Apelido:</label>
-            <input type="text" id="apelido" placeholder="O seu apelido">
+            <label for="campoApelido">Apelido:</label>
+            <input type="text" id="campoApelido" placeholder="O seu apelido">
         </div>
     </div>
 
     <h2>Selecionar Mercadoria</h2>
-    <label for="produto">Escolha o Produto:</label>
-    <select id="produto">
+    <label for="campoProduto">Escolha o Produto:</label>
+    <select id="campoProduto">
         <option value="C1-0732 | Castelbel Lavender 250mL">C1-0732 | Castelbel Lavender 250mL</option>
         <option value="C1-0733 | Castelbel Lavender 900mL">C1-0733 | Castelbel Lavender 900mL</option>
         <option value="C1-1532 | Castelbel White Jasmine 250mL">C1-1532 | Castelbel White Jasmine 250mL</option>
@@ -213,32 +175,72 @@
         <option value="C2-2333 | Portus Cale Gold&Blue 900mL">C2-2333 | Portus Cale Gold&Blue 900mL</option>
     </select>
 
-    <label for="quantidade">Qtd. / Unidade:</label>
-    <input type="text" id="quantidade" value="1 un">
+    <label for="campoQuantidade">Qtd. / Unidade:</label>
+    <input type="text" id="campoQuantidade" value="1 un">
 
-    <button class="btn-add" onclick="adicionarProduto()">Adicionar à Lista</button>
+    <button class="btn-add" onclick="adicionarNovoItem()">Adicionar à Lista</button>
 
     <h2>Lista de Reposição Atual</h2>
-    <div id="listaProdutos" class="lista-box">Nenhum produto adicionado.</div>
+    <div id="quadroLista" class="lista-box">Nenhum produto adicionado.</div>
 
-    <a id="linkEnviar" class="btn-whatsapp" href="#" onclick="return executarEnvio(event);">✉ ENVIAR PEDIDO VIA WHATSAPP</a>
+    <a id="linkZap" class="btn-whatsapp" href="#" onclick="return enviarDadosFinais(event);">✉ ENVIAR PEDIDO VIA WHATSAPP</a>
 </div>
 
 <script>
-    const numeroFornecedor = "351919658512";
-    let itensPedido = [];
+    const numeroDestinoZap = "351919658512";
+    let meusProdutosEscolhidos = [];
 
-    // Funções independentes para abrir a janela estilizada
-    function abrirJanela() {
-        document.getElementById('janelaInstrucoes').style.display = 'flex';
+    function mostrarInstrucoesLimpas() {
+        var textoAviso = "INSTALAR NO SEU ECRÃ:\n\n" +
+                         "• Se usa ANDROID:\n" +
+                         "1. Clique nos 3 pontinhos (:) no canto superior direito.\n" +
+                         "2. Escolha 'Adicionar ao ecrã principal' ou 'Instalar'.\n\n" +
+                         "• Se usa IPHONE:\n" +
+                         "1. Clique no botão Partilhar (quadrado com seta para cima).\n" +
+                         "2. Selecione 'Adicionar ao Ecrã Principal'.";
+        alert(textoAviso);
     }
 
-    function fecharJanela() {
-        document.getElementById('janelaInstrucoes').style.display = 'none';
-    }
-
-    function adicionarProduto() {
-        const produto = document.getElementById('produto').value;
-        const qtd = document.getElementById('quantidade').value.trim();
+    function adicionarNovoItem() {
+        const prod = document.getElementById('campoProduto').value;
+        const qtd = document.getElementById('campoQuantidade').value.trim();
 
         if (!qtd) {
+            alert('Por favor, defina uma quantidade.');
+            return;
+        }
+
+        meusProdutosEscolhidos.push({ produto: prod, qtd: qtd });
+        atualizarOQuadroVisual();
+        document.getElementById('campoQuantidade').value = "1 un";
+    }
+
+    function removerItemEspecifico(index) {
+        meusProdutosEscolhidos.splice(index, 1);
+        atualizarOQuadroVisual();
+    }
+
+    function atualizarOQuadroVisual() {
+        const divQuadro = document.getElementById('quadroLista');
+        divQuadro.innerHTML = '';
+
+        if (meusProdutosEscolhidos.length === 0) {
+            divQuadro.innerHTML = 'Nenhum produto adicionado.';
+            return;
+        }
+
+        meusProdutosEscolhidos.forEach((item, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'item-lista';
+            itemDiv.innerHTML = '<span><strong>' + item.produto + '</strong> (' + item.qtd + ')</span>' +
+                                '<button class="btn-remove" onclick="removerItemEspecifico(' + index + ')">Remover</button>';
+            divQuadro.appendChild(itemDiv);
+        });
+    }
+
+    function enviarDadosFinais(event) {
+        const nome = document.getElementById('campoNome').value.trim();
+        const apelido = document.getElementById('campoApelido').value.trim();
+
+        if (!nome || !apelido) {
+
