@@ -101,7 +101,6 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             box-sizing: border-box;
         }
-        /* Botão de instalação manual blindado */
         .btn-instalar-manual {
             display: block;
             background-color: #343a40;
@@ -121,8 +120,8 @@
 <body>
 
 <div class="container">
-    <!-- Botão de Instalação que funciona sempre por aviso direto -->
-    <button class="btn-instalar-manual" onclick="mostrarInstrucoesInstalacao()">📲 INSTALAR APLICAÇÃO NO TELEMÓVEL</button>
+    <!-- Botão com comando direto simplificado que o telemóvel não consegue bloquear -->
+    <button class="btn-instalar-manual" onclick="alert('PARA INSTALAR NO SEU ECRÃ:\n\n• Se usa ANDROID (Chrome):\n1. Clique nos 3 pontinhos (:) no canto superior direito.\n2. Escolha \'Adicionar ao ecrã principal\' ou \'Instalar\'.\n\n• Se usa IPHONE (Safari):\n1. Clique no botão Partilhar (quadrado com seta para cima na barra inferior).\n2. Selecione \'Adicionar ao Ecrã Principal\'.');">📲 INSTALAR APLICAÇÃO NO TELEMÓVEL</button>
 
     <h2>Dados do Fornecedor</h2>
     <div class="info-fornecedor">Contacto: +351 919 658 512</div>
@@ -228,12 +227,10 @@
         document.getElementById('linkEnviar').href = url;
         return true;
     }
+    
+    atualizarLista();
+</script>
 
-    // INTERFACE DE AVISO DIRECTO DE INSTALAÇÃO (À prova de bloqueios de segurança)
-    function mostrarInstrucoesInstalacao() {
-        // Deteta se o utilizador está em iPhone ou Android de forma simples
-        const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        
-        if (isiOS) {
-            alert("Para salvar no seu iPhone:\n\n1. Clique no botão de 'Partilhar' (o ícone quadrado com uma seta para cima na barra de baixo).\n2. Suba o menu e escolha a opção 'Adicionar ao Ecrã Principal'.");
-        } else {
+</body>
+</html>
+
