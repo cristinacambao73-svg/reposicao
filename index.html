@@ -54,10 +54,6 @@
             font-size: 16px;
             box-sizing: border-box;
         }
-        select optgroup {
-            font-weight: bold;
-            background: #f1f1f1;
-        }
         .btn-add {
             background-color: #007bff;
             color: white;
@@ -141,39 +137,34 @@
     <h2>Selecionar Mercadoria</h2>
     <label for="produto">Escolha o Produto:</label>
     <select id="produto">
-        <optgroup label="--- CASTELBEL ---">
-            <option value="C1-0732 | Castelbel Lavender 250mL">C1-0732 | Castelbel Lavender 250mL</option>
-            <option value="C1-0733 | Castelbel Lavender 900mL">C1-0733 | Castelbel Lavender 900mL</option>
-            <option value="C1-1532 | Castelbel White Jasmine 250mL">C1-1532 | Castelbel White Jasmine 250mL</option>
-            <option value="C1-1533 | Castelbel White Jasmine 900mL">C1-1533 | Castelbel White Jasmine 900mL</option>
-            <option value="C1-1932 | Castelbel Verbena 250mL">C1-1932 | Castelbel Verbena 250mL</option>
-            <option value="C1-1933 | Castelbel Verbena 900mL">C1-1933 | Castelbel Verbena 900mL</option>
-            <option value="C1-2232 | Castelbel Cotton Flower 250mL">C1-2232 | Castelbel Cotton Flower 250mL</option>
-            <option value="C1-2233 | Castelbel Cotton Flower 900mL">C1-2233 | Castelbel Cotton Flower 900mL</option>
-        </optgroup>
-        <optgroup label="--- CB TILE COLLECTION ---">
-            <option value="C1-9145 | CB Tile Lavender & Chamomile 250mL">C1-9145 | CB Tile Lavender & Chamomile 250mL</option>
-            <option value="C1-9146 | CB Tile Lavender & Chamomile 900mL">C1-9146 | CB Tile Lavender & Chamomile 900mL</option>
-            <option value="C1-9147 | CB Tile Santal Tonka 250mL">C1-9147 | CB Tile Santal Tonka 250mL</option>
-            <option value="C1-9148 | CB Tile Santal Tonka 900mL">C1-9148 | CB Tile Santal Tonka 900mL</option>
-            <option value="C1-9149 | CB Tile Green Sencha 250mL">C1-9149 | CB Tile Green Sencha 250mL</option>
-            <option value="C1-9150 | CB Tile Green Sencha 900mL">C1-9150 | CB Tile Green Sencha 900mL</option>
-        </optgroup>
-        <optgroup label="--- PORTUS CALE ---">
-            <option value="C2-1432 | Portus Cale Butterflies 250mL">C2-1432 | Portus Cale Butterflies 250mL</option>
-            <option value="C2-1732 | Portus Cale Black Edition New 250mL">C2-1732 | Portus Cale Black Edition New 250mL</option>
-            <option value="C2-1733 | Portus Cale Black Edition New 900mL">C2-1733 | Portus Cale Black Edition New 900mL</option>
-            <option value="C2-2032 | Portus Cale Ruby Red 250mL">C2-2032 | Portus Cale Ruby Red 250mL</option>
-            <option value="C2-2033 | Portus Cale Ruby Red 900mL">C2-2033 | Portus Cale Ruby Red 900mL</option>
-            <option value="C2-2832 | Portus Cale Rosé Blush 250mL">C2-2832 | Portus Cale Rosé Blush 250mL</option>
-            <option value="C2-2833 | Portus Cale Rosé Blush 900mL">C2-2833 | Portus Cale Rosé Blush 900mL</option>
-            <option value="C2-2932 | Portus Cale Hajjar Blanc 250mL">C2-2932 | Portus Cale Hajjar Blanc 250mL</option>
-            <option value="C2-2933 | Portus Cale Hajjar Blanc 900mL">C2-2933 | Portus Cale Hajjar Blanc 900mL</option>
-            <option value="C2-2732 | Portus Cale White Crane 250mL">C2-2732 | Portus Cale White Crane 250mL</option>
-            <option value="C2-2733 | Portus Cale White Crane 900mL">C2-2733 | Portus Cale White Crane 900mL</option>
-            <option value="C2-2332 | Portus Cale Gold&Blue 250mL">C2-2332 | Portus Cale Gold&Blue 250mL</option>
-            <option value="C2-2333 | Portus Cale Gold&Blue 900mL">C2-2333 | Portus Cale Gold&Blue 900mL</option>
-        </optgroup>
+        <!-- LISTA SIMPLIFICADA SEM SUBGRUPOS PARA NÃO TRAVAR EM NENHUM DISPOSITIVO -->
+        <option value="C1-0732 | Castelbel Lavender 250mL">C1-0732 | Castelbel Lavender 250mL</option>
+        <option value="C1-0733 | Castelbel Lavender 900mL">C1-0733 | Castelbel Lavender 900mL</option>
+        <option value="C1-1532 | Castelbel White Jasmine 250mL">C1-1532 | Castelbel White Jasmine 250mL</option>
+        <option value="C1-1533 | Castelbel White Jasmine 900mL">C1-1533 | Castelbel White Jasmine 900mL</option>
+        <option value="C1-1932 | Castelbel Verbena 250mL">C1-1932 | Castelbel Verbena 250mL</option>
+        <option value="C1-1933 | Castelbel Verbena 900mL">C1-1933 | Castelbel Verbena 900mL</option>
+        <option value="C1-2232 | Castelbel Cotton Flower 250mL">C1-2232 | Castelbel Cotton Flower 250mL</option>
+        <option value="C1-2233 | Castelbel Cotton Flower 900mL">C1-2233 | Castelbel Cotton Flower 900mL</option>
+        <option value="C1-9145 | CB Tile Lavender & Chamomile 250mL">C1-9145 | CB Tile Lavender & Chamomile 250mL</option>
+        <option value="C1-9146 | CB Tile Lavender & Chamomile 900mL">C1-9146 | CB Tile Lavender & Chamomile 900mL</option>
+        <option value="C1-9147 | CB Tile Santal Tonka 250mL">C1-9147 | CB Tile Santal Tonka 250mL</option>
+        <option value="C1-9148 | CB Tile Santal Tonka 900mL">C1-9148 | CB Tile Santal Tonka 900mL</option>
+        <option value="C1-9149 | CB Tile Green Sencha 250mL">C1-9149 | CB Tile Green Sencha 250mL</option>
+        <option value="C1-9150 | CB Tile Green Sencha 900mL">C1-9150 | CB Tile Green Sencha 900mL</option>
+        <option value="C2-1432 | Portus Cale Butterflies 250mL">C2-1432 | Portus Cale Butterflies 250mL</option>
+        <option value="C2-1732 | Portus Cale Black Edition New 250mL">C2-1732 | Portus Cale Black Edition New 250mL</option>
+        <option value="C2-1733 | Portus Cale Black Edition New 900mL">C2-1733 | Portus Cale Black Edition New 900mL</option>
+        <option value="C2-2032 | Portus Cale Ruby Red 250mL">C2-2032 | Portus Cale Ruby Red 250mL</option>
+        <option value="C2-2033 | Portus Cale Ruby Red 900mL">C2-2033 | Portus Cale Ruby Red 900mL</option>
+        <option value="C2-2832 | Portus Cale Rosé Blush 250mL">C2-2832 | Portus Cale Rosé Blush 250mL</option>
+        <option value="C2-2833 | Portus Cale Rosé Blush 900mL">C2-2833 | Portus Cale Rosé Blush 900mL</option>
+        <option value="C2-2932 | Portus Cale Hajjar Blanc 250mL">C2-2932 | Portus Cale Hajjar Blanc 250mL</option>
+        <option value="C2-2933 | Portus Cale Hajjar Blanc 900mL">C2-2933 | Portus Cale Hajjar Blanc 900mL</option>
+        <option value="C2-2732 | Portus Cale White Crane 250mL">C2-2732 | Portus Cale White Crane 250mL</option>
+        <option value="C2-2733 | Portus Cale White Crane 900mL">C2-2733 | Portus Cale White Crane 900mL</option>
+        <option value="C2-2332 | Portus Cale Gold&Blue 250mL">C2-2332 | Portus Cale Gold&Blue 250mL</option>
+        <option value="C2-2333 | Portus Cale Gold&Blue 900mL">C2-2333 | Portus Cale Gold&Blue 900mL</option>
     </select>
 
     <label for="quantidade">Qtd. / Unidade:</label>
@@ -193,9 +184,9 @@
     const numeroFornecedor = "351919658512";
     let itensPedido = [];
 
+    // MODO ULTRA COMPATÍVEL: Lê o valor bruto diretamente do elemento select
     function adicionarProduto() {
-        const selectObj = document.getElementById('produto');
-        const produto = selectObj.options[selectObj.selectedIndex].value;
+        const produto = document.getElementById('produto').value;
         const qtd = document.getElementById('quantidade').value.trim();
 
         if (!qtd) {
@@ -247,4 +238,9 @@
             mensagem += `• *${item.produto}* (${item.qtd})\n`;
         });
 
-
+        mensagem += "\nFico a aguardar a confirmação do pedido. Obrigado!";
+        
+        const textoCodificado = encodeURIComponent(mensagem);
+        const urlNativaWhatsApp = `whatsapp://send?phone=${numeroFornecedor}&text=${textoCodificado}`;
+        
+        document.getElementById('linkEnviar').href = urlNativaWhatsApp;
