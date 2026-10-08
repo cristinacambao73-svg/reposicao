@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pedido de Reposição WhatsApp</title>
-    <!-- Configurações para o telemóvel reconhecer como uma App Instalável -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Reposição">
@@ -96,18 +95,20 @@
             font-size: 12px;
             cursor: pointer;
         }
+        /* Estilo do botão modificado para link nativo */
         .btn-whatsapp {
+            display: block;
             background-color: #25D366;
             color: white;
-            border: none;
-            width: 100%;
+            text-align: center;
+            text-decoration: none;
             padding: 14px;
             border-radius: 8px;
             font-size: 16px;
             font-weight: bold;
-            cursor: pointer;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             margin-top: 10px;
+            box-sizing: border-box;
         }
         .btn-whatsapp:active { background-color: #1ebd59; }
         .btn-instalar {
@@ -151,7 +152,8 @@
         <!-- Itens dinâmicos -->
     </div>
 
-    <button class="btn-whatsapp" onclick="enviarWhatsApp()">✉ ENVIAR PEDIDO VIA WHATSAPP</button>
+    <!-- CORREÇÃO: Transforma o botão num link direto nativo invulnerável a bloqueios -->
+    <a id="linkEnviar" class="btn-whatsapp" href="#" onclick="return prepararEnvio(event);">✉ ENVIAR PEDIDO VIA WHATSAPP</a>
 </div>
 
 <script>
@@ -197,10 +199,12 @@
         });
     }
 
-    function enviarWhatsApp() {
+    // CORREÇÃO: Prepara o link imediatamente antes do clique acontecer de forma limpa
+    function prepararEnvio(event) {
         if (itensPedido.length === 0) {
             alert('A sua lista está vazia! Adicione produtos primeiro.');
-            return;
+            event.preventDefault();
+            return false;
         }
 
         let mensagem = "*Novo Pedido de Reposição*\n\n";
@@ -213,14 +217,14 @@
         mensagem += "\nFico a aguardar a confirmação do pedido. Obrigado!";
         
         const textoCodificado = encodeURIComponent(mensagem);
-        
-        // CORREÇÃO: Nova API universal que funciona em qualquer navegador de telemóvel e computador
         const urlWhatsApp = `https://whatsapp.com{numeroFornecedor}&text=${textoCodificado}`;
         
-        window.open(urlWhatsApp, '_blank');
+        // Define o caminho diretamente no link para contornar o bloqueador do browser
+        document.getElementById('linkEnviar').href = urlWhatsApp;
+        return true;
     }
 
-    // Instalação PWA
+    // Instalação PWA automática
     let deparaInstalacao;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
