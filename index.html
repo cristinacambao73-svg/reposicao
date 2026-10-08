@@ -15,11 +15,10 @@
         .container {
             max-width: 500px;
             margin: 20px auto;
-            background: #0597F2;
+            background: white;
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            position: relative;
         }
         h1 {
             font-size: 18px;
@@ -70,7 +69,6 @@
             font-weight: bold;
             cursor: pointer;
         }
-        .btn-add:active { background-color: #0056b3; }
         .lista-box {
             border: 1px solid #ddd;
             border-radius: 6px;
@@ -110,7 +108,6 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             box-sizing: border-box;
         }
-        .btn-whatsapp:active { background-color: #1ebd59; }
         .btn-instalar-manual {
             display: block;
             background-color: #343a40;
@@ -125,7 +122,6 @@
             cursor: pointer;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        /* CAIXA DE AVISO MODERNA INTEGRADA (EVITA ERROS DE SINTAXE) */
         .janela-alerta {
             display: none;
             position: fixed;
@@ -144,10 +140,9 @@
             max-width: 400px;
             width: 100%;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            text-align: left;
         }
         .janela-conteudo h3 { margin-top: 0; font-size: 16px; color: #222; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-        .janela-conteudo p { font-size: 14px; line-height: 1.5; color: #444; }
+        .janela-conteudo p { font-size: 14px; line-height: 1.5; color: #444; text-align: left; }
         .btn-fechar-alerta {
             background-color: #343a40; color: white; border: none; width: 100%; padding: 10px;
             border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px;
@@ -156,10 +151,9 @@
 </head>
 <body>
 
-<!-- Caixa de Aviso para Instalação -->
 <div id="minhaJanelaAlerta" class="janela-alerta">
     <div class="janela-conteudo">
-        <h3>COMO INSTALAR NO SEU ECRÃ:</h3>
+        <h3>INSTALAR NO SEU ECRÃ:</h3>
         <p><strong>• Se usa ANDROID (Chrome):</strong><br>1. Clique nos 3 pontinhos (:) no canto superior direito.<br>2. Escolha 'Adicionar ao ecrã principal' ou 'Instalar'.</p>
         <p><strong>• Se usa IPHONE (Safari):</strong><br>1. Clique no botão Partilhar (quadrado com seta para cima na barra inferior).<br>2. Selecione 'Adicionar ao Ecrã Principal'.</p>
         <button class="btn-fechar-alerta" onclick="fecharInstrucoes()">Entendido</button>
@@ -167,7 +161,6 @@
 </div>
 
 <div class="container">
-    <!-- Botão que abre a caixa nativa sem quebrar o código -->
     <button class="btn-instalar-manual" onclick="abrirInstrucoes()">📲 INSTALAR APLICAÇÃO NO TELEMÓVEL</button>
 
     <h1>PRODUTOS CASTELBEL REPOSIÇÃO</h1>
@@ -239,4 +232,13 @@
     }
 
     function acaoAdicionar() {
+        const prod = document.getElementById('produtoSelecionado').value;
+        const qtd = document.getElementById('qtdProduto').value.trim();
 
+        if (!qtd) {
+            alert('Por favor, defina uma quantidade.');
+            return;
+        }
+
+        listaItens.push({ produto: prod, qtd: qtd });
+        renderizarLista();
