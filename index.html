@@ -54,6 +54,10 @@
             font-size: 16px;
             box-sizing: border-box;
         }
+        select optgroup {
+            font-weight: bold;
+            background: #f1f1f1;
+        }
         .btn-add {
             background-color: #007bff;
             color: white;
@@ -83,7 +87,7 @@
             align-items: center;
             padding: 8px 5px;
             border-bottom: 1px solid #eee;
-            font-size: 15px;
+            font-size: 14px;
         }
         .item-lista:last-child { border-bottom: none; }
         .btn-remove {
@@ -137,9 +141,40 @@
     <h2>Selecionar Mercadoria</h2>
     <label for="produto">Escolha o Produto:</label>
     <select id="produto">
-        <option value="Repositor lavanda">Repositor lavanda</option>
-        <option value="Repositor camomila">Repositor camomila</option>
-        <option value="Repositor rosa">Repositor rosa</option>
+        <!-- PRODUTOS EXTRAÍDOS DA SUA IMAGEM -->
+        <optgroup label="--- CASTELBEL ---">
+            <option value="[C1-0732] Castelbel Lavender 250mL">C1-0732 | Castelbel Lavender 250mL</option>
+            <option value="[C1-0733] Castelbel Lavender 900mL">C1-0733 | Castelbel Lavender 900mL</option>
+            <option value="[C1-1532] Castelbel White Jasmine 250mL">C1-1532 | Castelbel White Jasmine 250mL</option>
+            <option value="[C1-1533] Castelbel White Jasmine 900mL">C1-1533 | Castelbel White Jasmine 900mL</option>
+            <option value="[C1-1932] Castelbel Verbena 250mL">C1-1932 | Castelbel Verbena 250mL</option>
+            <option value="[C1-1933] Castelbel Verbena 900mL">C1-1933 | Castelbel Verbena 900mL</option>
+            <option value="[C1-2232] Castelbel Cotton Flower 250mL">C1-2232 | Castelbel Cotton Flower 250mL</option>
+            <option value="[C1-2233] Castelbel Cotton Flower 900mL">C1-2233 | Castelbel Cotton Flower 900mL</option>
+        </optgroup>
+        <optgroup label="--- CB TILE COLLECTION ---">
+            <option value="[C1-9145] CB Tile Lavender & Chamomile 250mL">C1-9145 | CB Tile Lavender & Chamomile 250mL</option>
+            <option value="[C1-9146] CB Tile Lavender & Chamomile 900mL">C1-9146 | CB Tile Lavender & Chamomile 900mL</option>
+            <option value="[C1-9147] CB Tile Santal Tonka 250mL">C1-9147 | CB Tile Santal Tonka 250mL</option>
+            <option value="[C1-9148] CB Tile Santal Tonka 900mL">C1-9148 | CB Tile Santal Tonka 900mL</option>
+            <option value="[C1-9149] CB Tile Green Sencha 250mL">C1-9149 | CB Tile Green Sencha 250mL</option>
+            <option value="[C1-9150] CB Tile Green Sencha 900mL">C1-9150 | CB Tile Green Sencha 900mL</option>
+        </optgroup>
+        <optgroup label="--- PORTUS CALE ---">
+            <option value="[C2-1432] Portus Cale Butterflies 250mL">C2-1432 | Portus Cale Butterflies 250mL</option>
+            <option value="[C2-1732] Portus Cale Black Edition New 250mL">C2-1732 | Portus Cale Black Edition New 250mL</option>
+            <option value="[C2-1733] Portus Cale Black Edition New 900mL">C2-1733 | Portus Cale Black Edition New 900mL</option>
+            <option value="[C2-2032] Portus Cale Ruby Red 250mL">C2-2032 | Portus Cale Ruby Red 250mL</option>
+            <option value="[C2-2033] Portus Cale Ruby Red 900mL">C2-2033 | Portus Cale Ruby Red 900mL</option>
+            <option value="[C2-2832] Portus Cale Rosé Blush 250mL">C2-2832 | Portus Cale Rosé Blush 250mL</option>
+            <option value="[C2-2833] Portus Cale Rosé Blush 900mL">C2-2833 | Portus Cale Rosé Blush 900mL</option>
+            <option value="[C2-2932] Portus Cale Hajjar Blanc 250mL">C2-2932 | Portus Cale Hajjar Blanc 250mL</option>
+            <option value="[C2-2933] Portus Cale Hajjar Blanc 900mL">C2-2933 | Portus Cale Hajjar Blanc 900mL</option>
+            <option value="[C2-2732] Portus Cale White Crane 250mL">C2-2732 | Portus Cale White Crane 250mL</option>
+            <option value="[C2-2733] Portus Cale White Crane 900mL">C2-2733 | Portus Cale White Crane 900mL</option>
+            <option value="[C2-2332] Portus Cale Gold&Blue 250mL">C2-2332 | Portus Cale Gold&Blue 250mL</option>
+            <option value="[C2-2333] Portus Cale Gold&Blue 900mL">C2-2333 | Portus Cale Gold&Blue 900mL</option>
+        </optgroup>
     </select>
 
     <label for="quantidade">Qtd. / Unidade:</label>
@@ -149,10 +184,9 @@
 
     <h2>Lista de Reposição Atual</h2>
     <div id="listaProdutos" class="lista-box">
-        <!-- Elementos inseridos dinamicamente -->
+        <!-- Itens dinâmicos -->
     </div>
 
-    <!-- CORREÇÃO: Botão reconfigurado para acionar o protocolo nativo seguro no clique direto -->
     <a id="linkEnviar" class="btn-whatsapp" href="#" onclick="return executarEnvioNativo(event);">✉ ENVIAR PEDIDO VIA WHATSAPP</a>
 </div>
 
@@ -199,7 +233,6 @@
         });
     }
 
-    // CORREÇÃO DEFINITIVA: Constrói e executa a ligação diretamente usando o sistema do telemóvel no clique
     function executarEnvioNativo(event) {
         if (itensPedido.length === 0) {
             alert('A sua lista está vazia! Adicione produtos primeiro.');
@@ -214,37 +247,3 @@
             mensagem += `• *${item.produto}* (${item.qtd})\n`;
         });
 
-        mensagem += "\nFico a aguardar a confirmação do pedido. Obrigado!";
-        
-        const textoCodificado = encodeURIComponent(mensagem);
-        
-        // Protocolo nativo móvel direto: não abre páginas web intermédias nem gera bloqueios about:blank
-        const urlNativaWhatsApp = `whatsapp://send?phone=${numeroFornecedor}&text=${textoCodificado}`;
-        
-        document.getElementById('linkEnviar').href = urlNativaWhatsApp;
-        return true;
-    }
-
-    // Código PWA para suporte a instalação
-    let deparaInstalacao;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deparaInstalacao = e;
-        document.getElementById('btnInstalar').style.display = 'block';
-    });
-
-    document.getElementById('btnInstalar').addEventListener('click', async () => {
-        if (deparaInstalacao) {
-            deparaInstalacao.prompt();
-            const { outcome } = await deparaInstalacao.userChoice;
-            if (outcome === 'accepted') {
-                document.getElementById('btnInstalar').style.display = 'none';
-            }
-        }
-    });
-    
-    atualizarInterfaceLista();
-</script>
-
-</body>
-</html>
