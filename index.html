@@ -95,7 +95,6 @@
             font-size: 12px;
             cursor: pointer;
         }
-        /* Estilo do botão modificado para link nativo */
         .btn-whatsapp {
             display: block;
             background-color: #25D366;
@@ -152,8 +151,8 @@
         <!-- Itens dinâmicos -->
     </div>
 
-    <!-- CORREÇÃO: Transforma o botão num link direto nativo invulnerável a bloqueios -->
-    <a id="linkEnviar" class="btn-whatsapp" href="#" onclick="return prepararEnvio(event);">✉ ENVIAR PEDIDO VIA WHATSAPP</a>
+    <!-- O link agora é validado antes pelo JavaScript nativo no clique -->
+    <a id="linkEnviar" class="btn-whatsapp" href="#" onclick="return validarClique(event);">✉ ENVIAR PEDIDO VIA WHATSAPP</a>
 </div>
 
 <script>
@@ -185,6 +184,7 @@
 
         if (itensPedido.length === 0) {
             listaDiv.innerHTML = '<span style="color:#888; font-size:14px;">Nenhum produto adicionado.</span>';
+            document.getElementById('linkEnviar').href = "#";
             return;
         }
 
@@ -197,16 +197,12 @@
             `;
             listaDiv.appendChild(itemDiv);
         });
+
+        // CORREÇÃO: Atualiza o link em segundo plano imediatamente após mexer na lista
+        atualizarLinkWhatsapp();
     }
 
-    // CORREÇÃO: Prepara o link imediatamente antes do clique acontecer de forma limpa
-    function prepararEnvio(event) {
-        if (itensPedido.length === 0) {
-            alert('A sua lista está vazia! Adicione produtos primeiro.');
-            event.preventDefault();
-            return false;
-        }
-
+    function atualizarLinkWhatsapp() {
         let mensagem = "*Novo Pedido de Reposição*\n\n";
         mensagem += "Olá, gostaria de solicitar a reposição dos seguintes produtos:\n\n";
 
@@ -217,10 +213,18 @@
         mensagem += "\nFico a aguardar a confirmação do pedido. Obrigado!";
         
         const textoCodificado = encodeURIComponent(mensagem);
-        const urlWhatsApp = `https://whatsapp.com{numeroFornecedor}&text=${textoCodificado}`;
+        // Usando o formato direto universal estável
+        const urlWhatsApp = `https://wa.me{numeroFornecedor}?text=${textoCodificado}`;
         
-        // Define o caminho diretamente no link para contornar o bloqueador do browser
         document.getElementById('linkEnviar').href = urlWhatsApp;
+    }
+
+    function validarClique(event) {
+        if (itensPedido.length === 0) {
+            alert('A sua lista está vazia! Adicione produtos primeiro.');
+            event.preventDefault();
+            return false;
+        }
         return true;
     }
 
