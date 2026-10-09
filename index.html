@@ -132,7 +132,7 @@
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('./sw.js')
-            .then(() => console.log('Service Worker Ativo.'))
+            .then(() => console.log('Service Worker Ativo V2.'))
             .catch((err) => console.error('Erro SW:', err));
         });
       }
@@ -191,7 +191,8 @@
     <label for="campoQuantidade">Qtd. / Unidade:</label>
     <input type="text" id="campoQuantidade" value="1 un">
 
-    <button class="btn-add" onclick="adicionarNovoItem()">Adicionar à Lista</button>
+    <!-- Alterado o nome da função no botão para contornar a cache antiga -->
+    <button class="btn-add" onclick="adicionarItemNaListaV2()">Adicionar à Lista</button>
 
     <h2>Lista de Reposição Atual</h2>
     <div id="quadroLista" class="lista-box">Nenhum produto adicionado.</div>
@@ -203,7 +204,8 @@
     const numeroDestinoZap = "351919658512";
     let meusProdutosEscolhidos = [];
 
-    function adicionarNovoItem() {
+    // Função renovada com novo nome
+    function adicionarItemNaListaV2() {
         const produtoSelect = document.getElementById("campoProduto");
         const quantidadeInput = document.getElementById("campoQuantidade");
         const produto = produtoSelect.value;
@@ -247,7 +249,4 @@
         const apelido = document.getElementById("campoApelido").value.trim();
 
         if (!nome || !apelido) {
-            alert("Por favor, preencha o seu Nome e Apelido antes de enviar.");
-            return false;
-        }
-        if (meusProdutosEscolhidos.length === 0) {
+
