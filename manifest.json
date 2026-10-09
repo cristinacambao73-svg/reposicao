@@ -1,20 +1,20 @@
 {
-  "name": "Produtos Castelbel Reposição",
+  "name": "PRODUTOS CASTELBEL REPOSIÇÃO",
   "short_name": "Castelbel",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#005594",
-  "theme_color": "#005594",
+  "background_color": "#0597F2",
+  "theme_color": "#0597F2",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "https://placeholder.com",
+      "src": "https://picsum.photos",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://placeholder.com",
+      "src": "https://picsum.photos",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
