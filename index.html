@@ -23,17 +23,17 @@
         h1 {
             font-size: 18px;
             text-align: center;
-            color: #222;
+            color: white; /* Ajustado para melhor contraste no fundo azul */
             margin-bottom: 20px;
-            border-bottom: 2px solid #eee;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
             padding-bottom: 10px;
         }
         h2 {
             font-size: 16px;
             margin-top: 20px;
             margin-bottom: 8px;
-            color: #444;
-            border-bottom: 2px solid #eee;
+            color: white; /* Ajustado para melhor contraste */
+            border-bottom: 2px solid rgba(255,255,255,0.3);
             padding-bottom: 5px;
         }
         label {
@@ -41,6 +41,7 @@
             font-weight: bold;
             margin-bottom: 5px;
             font-size: 14px;
+            color: white; /* Ajustado para melhor contraste */
         }
         select, input {
             width: 100%;
@@ -77,6 +78,7 @@
             background: #fafafa;
             margin-bottom: 15px;
             font-size: 14px;
+            color: #333;
         }
         .item-lista {
             display: flex;
@@ -123,23 +125,24 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
     </style>
+    
     <!-- Ligação ao ficheiro Manifest -->
-<link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json">
 
-<!-- Script para ativar o Service Worker -->
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-      .then(() => console.log('Service Worker Registado com Sucesso.'))
-      .catch((error) => console.log('Erro ao registar Service Worker:', error));
-  }
-</script>
+    <!-- Script para ativar o Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+          .then(() => console.log('Service Worker Registado com Sucesso.'))
+          .catch((error) => console.log('Erro ao registar Service Worker:', error));
+      }
+    </script>
 </head>
 <body>
 
 <div class="container">
-    <!-- Botão Preto Otimizado (Chama a função limpa sem dar erro) -->
-    <button class="btn-instalar-manual" onclick="mostrarInstrucoesLimpas()">📲 INSTALAR NO SEU ECRÃ</button>
+    <!-- Botão de Instalação PWA Real -->
+    <button id="btnInstalarPWA" class="btn-instalar-manual">📲 INSTALAR NO SEU ECRÃ</button>
 
     <h1>PRODUTOS CASTELBEL REPOSIÇÃO</h1>
 
@@ -194,63 +197,52 @@
     <h2>Lista de Reposição Atual</h2>
     <div id="quadroLista" class="lista-box">Nenhum produto adicionado.</div>
 
-    <a id="linkZap" class="btn-whatsapp" href="#" onclick="return enviarDadosFinais(event);">✉ ENVIAR PEDIDO VIA WHATSAPP</a>
+    <a id="linkZap" class="btn-whatsapp" href="#" onclick="enviarDadosFinais(event)">✉ ENVIAR PEDIDO VIA WHATSAPP</a>
 </div>
 
 <script>
     const numeroDestinoZap = "351919658512";
     let meusProdutosEscolhidos = [];
 
-    function mostrarInstrucoesLimpas() {
-        var textoAviso = "INSTALAR NO SEU ECRÃ:\n\n" +
-                         "• Se usa ANDROID:\n" +
-                         "1. Clique nos 3 pontinhos (:) no canto superior direito.\n" +
-                         "2. Escolha 'Adicionar ao ecrã principal' ou 'Instalar'.\n\n" +
-                         "• Se usa IPHONE:\n" +
-                         "1. Clique no botão Partilhar (quadrado com seta para cima).\n" +
-                         "2. Selecione 'Adicionar ao Ecrã Principal'.";
-        alert(textoAviso);
-    }
-
+    // 1. Função para Adicionar Itens à Lista Visual
     function adicionarNovoItem() {
-        const prod = document.getElementById('campoProduto').value;
-        const qtd = document.getElementById('campoQuantidade').value.trim();
+        const produtoSelect = document.getElementById("campoProduto");
+        const quantidadeInput = document.getElementById("campoQuantidade");
+        const quadroLista = document.getElementById("quadroLista");
 
-        if (!qtd) {
-            alert('Por favor, defina uma quantidade.');
+        const produto = produtoSelect.value;
+        const quantidade = quantidadeInput.value.trim();
+
+        if (quantidade === "") {
+            alert("Por favor, introduza uma quantidade.");
             return;
         }
 
-        meusProdutosEscolhidos.push({ produto: prod, qtd: qtd });
-        atualizarOQuadroVisual();
-        document.getElementById('campoQuantidade').value = "1 un";
+        // Adiciona ao array local
+        meusProdutosEscolhidos.push({ produto, quantidade });
+        atualizarVisualizacaoLista();
     }
 
-    function removerItemEspecifico(index) {
-        meusProdutosEscolhidos.splice(index, 1);
-        atualizarOQuadroVisual();
-    }
-
-    function atualizarOQuadroVisual() {
-        const divQuadro = document.getElementById('quadroLista');
-        divQuadro.innerHTML = '';
-
+    // 2. Função para Atualizar o Quadro com os itens e botões de remover
+    function atualizarVisualizacaoLista() {
+        const quadroLista = document.getElementById("quadroLista");
+        
         if (meusProdutosEscolhidos.length === 0) {
-            divQuadro.innerHTML = 'Nenhum produto adicionado.';
+            quadroLista.innerHTML = "Nenhum produto adicionado.";
             return;
         }
 
+        quadroLista.innerHTML = "";
         meusProdutosEscolhidos.forEach((item, index) => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'item-lista';
-            itemDiv.innerHTML = '<span><strong>' + item.produto + '</strong> (' + item.qtd + ')</span>' +
-                                '<button class="btn-remove" onclick="removerItemEspecifico(' + index + ')">Remover</button>';
-            divQuadro.appendChild(itemDiv);
+            const divItem = document.createElement("div");
+            divItem.className = "item-lista";
+            divItem.innerHTML = `
+                <span><strong>${item.quantidade}</strong> - ${item.produto}</span>
+                <button class="btn-remove" onclick="removerItem(${index})">Remover</button>
+            `;
+            quadroLista.appendChild(divItem);
         });
     }
 
-    function enviarDadosFinais(event) {
-        const nome = document.getElementById('campoNome').value.trim();
-        const apelido = document.getElementById('campoApelido').value.trim();
-
-        if (!nome || !apelido) {
+    // 3. Função para Remover Itens Individuais da Lista
+    function removerItem(index) {
