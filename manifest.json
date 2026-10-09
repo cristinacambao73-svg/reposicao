@@ -1,0 +1,23 @@
+{
+  "name": "Produtos Castelbel Reposição",
+  "short_name": "Castelbel",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#005594",
+  "theme_color": "#005594",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://placeholder.com",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://placeholder.com",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
