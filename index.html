@@ -126,22 +126,21 @@
         }
     </style>
     
-    <!-- Ligação ao ficheiro Manifest -->
     <link rel="manifest" href="manifest.json">
 
-    <!-- Script para ativar o Service Worker -->
     <script>
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js')
-          .then(() => console.log('Service Worker Registado com Sucesso.'))
-          .catch((error) => console.log('Erro ao registar Service Worker:', error));
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+            .then(() => console.log('Service Worker Ativo.'))
+            .catch((err) => console.error('Erro SW:', err));
+        });
       }
     </script>
 </head>
 <body>
 
 <div class="container">
-    <!-- Botão de Instalação -->
     <button id="btnInstalarPWA" class="btn-instalar-manual">📲 INSTALAR NO SEU ECRÃ</button>
 
     <h1>PRODUTOS CASTELBEL REPOSIÇÃO</h1>
@@ -215,7 +214,7 @@
             return;
         }
 
-        meusProdutosEscolhidos.push({ produto, quantidade });
+        meusProdutosEscolhidos.push({ produto, quantity: quantidade });
         atualizarVisualizacaoLista();
     }
 
@@ -230,7 +229,7 @@
             const divItem = document.createElement("div");
             divItem.className = "item-lista";
             divItem.innerHTML = `
-                <span><strong>${item.quantidade}</strong> - ${item.produto}</span>
+                <span><strong>${item.quantity}</strong> - ${item.produto}</span>
                 <button class="btn-remove" onclick="removerItem(${index})">Remover</button>
             `;
             quadroLista.appendChild(divItem);
@@ -249,3 +248,6 @@
 
         if (!nome || !apelido) {
             alert("Por favor, preencha o seu Nome e Apelido antes de enviar.");
+            return false;
+        }
+        if (meusProdutosEscolhidos.length === 0) {
