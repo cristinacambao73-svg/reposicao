@@ -23,7 +23,7 @@
         h1 {
             font-size: 18px;
             text-align: center;
-            color: white; /* Ajustado para melhor contraste no fundo azul */
+            color: white;
             margin-bottom: 20px;
             border-bottom: 2px solid rgba(255,255,255,0.3);
             padding-bottom: 10px;
@@ -32,7 +32,7 @@
             font-size: 16px;
             margin-top: 20px;
             margin-bottom: 8px;
-            color: white; /* Ajustado para melhor contraste */
+            color: white;
             border-bottom: 2px solid rgba(255,255,255,0.3);
             padding-bottom: 5px;
         }
@@ -41,7 +41,7 @@
             font-weight: bold;
             margin-bottom: 5px;
             font-size: 14px;
-            color: white; /* Ajustado para melhor contraste */
+            color: white;
         }
         select, input {
             width: 100%;
@@ -141,7 +141,7 @@
 <body>
 
 <div class="container">
-    <!-- Botão de Instalação PWA Real -->
+    <!-- Botão de Instalação -->
     <button id="btnInstalarPWA" class="btn-instalar-manual">📲 INSTALAR NO SEU ECRÃ</button>
 
     <h1>PRODUTOS CASTELBEL REPOSIÇÃO</h1>
@@ -204,12 +204,9 @@
     const numeroDestinoZap = "351919658512";
     let meusProdutosEscolhidos = [];
 
-    // 1. Função para Adicionar Itens à Lista Visual
     function adicionarNovoItem() {
         const produtoSelect = document.getElementById("campoProduto");
         const quantidadeInput = document.getElementById("campoQuantidade");
-        const quadroLista = document.getElementById("quadroLista");
-
         const produto = produtoSelect.value;
         const quantidade = quantidadeInput.value.trim();
 
@@ -218,20 +215,16 @@
             return;
         }
 
-        // Adiciona ao array local
         meusProdutosEscolhidos.push({ produto, quantidade });
         atualizarVisualizacaoLista();
     }
 
-    // 2. Função para Atualizar o Quadro com os itens e botões de remover
     function atualizarVisualizacaoLista() {
         const quadroLista = document.getElementById("quadroLista");
-        
         if (meusProdutosEscolhidos.length === 0) {
             quadroLista.innerHTML = "Nenhum produto adicionado.";
             return;
         }
-
         quadroLista.innerHTML = "";
         meusProdutosEscolhidos.forEach((item, index) => {
             const divItem = document.createElement("div");
@@ -244,5 +237,15 @@
         });
     }
 
-    // 3. Função para Remover Itens Individuais da Lista
     function removerItem(index) {
+        meusProdutosEscolhidos.splice(index, 1);
+        atualizarVisualizacaoLista();
+    }
+
+    function enviarDadosFinais(event) {
+        event.preventDefault();
+        const nome = document.getElementById("campoNome").value.trim();
+        const apelido = document.getElementById("campoApelido").value.trim();
+
+        if (!nome || !apelido) {
+            alert("Por favor, preencha o seu Nome e Apelido antes de enviar.");
